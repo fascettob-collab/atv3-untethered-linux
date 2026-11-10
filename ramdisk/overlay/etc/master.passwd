@@ -1,0 +1,4 @@
+root:*:0:0::0:0:System Administrator:/var/root:/bin/bash
+daemon:*:1:1::0:0:System Services:/var/root:/bin/false
+sshd:*:75:75::0:0:sshd Privilege separation:/var/empty:/bin/false
+nobody:*:-2:-2::0:0:Unprivileged User:/var/empty:/bin/false

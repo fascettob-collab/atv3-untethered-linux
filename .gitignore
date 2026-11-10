@@ -1,0 +1,25 @@
+# Apple firmware (regenerable from IPSWs — not committed)
+*.img3
+*.dfu
+*.dmg
+*.hfs
+SecureROM*.bin
+*kernelcache*
+*DeviceTree*
+
+# payloads / big binaries
+*.tar
+payload*.bin
+rdkit.tar
+rdpack.tar
+
+# backups and generated output
+backup/
+extra/
+work.hfs
+*.patched
+*.dec
+
+# python
+__pycache__/
+*.pyc

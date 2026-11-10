@@ -1,0 +1,4 @@
+wheel:*:0:root
+daemon:*:1:root
+sshd:*:75:
+nobody:*:-2:
