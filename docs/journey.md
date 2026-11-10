@@ -234,3 +234,19 @@ Full recipe:
 2. **Heap base and allocation order** at DFU boot: DFU buffer, USB requests, descriptors. With that we can compute what sits at +0x5A0 from the freed buffer.
 3. **USB reset path:** from `usb_core_do_io` and the event handlers, find where the pending requests are walked and their callback is called. That gives the real offset of the callback in the request structure.
 4. With 1 to 3: build an overwrite that **rewrites the original value at 0x5A0** and puts the fake structure where it belongs. Try first with `BX LR` against an invalid address.
+
+## SSH access (post-untether, 2026-11-10 late night)
+- **Windows PC**: `ssh atv` (alias in `C:\Users\fasce\.ssh\config`, keypair `atv`/`atv.pub` ed25519 installed)
+- **casa (Linux)**: `ssh atv` (alias in `~/.ssh/config`)
+- **USB**: `iproxy 2222 22` on casa + `ssh -p 2222 root@localhost`
+- SSH takes **~3-5 minutes** after powering the ATV on (the untether chain).
+- IP: `192.168.0.109` (worth reserving in the router's DHCP).
+- Still to install on the ATV: `cat`, `grep`, `head`, `ifconfig` (armv7 binaries in `emu/extra/`).
+
+## Open next steps
+1. **Kodi Helix 14.2** on the ATV (repo from the regulad/Blackb0x-- fork, maintained 2026) — HW-accelerated playback + shared folder with the Linux box.
+2. **"Stremio-ATV"**: adapt PopcornTimeSE with Cinemeta catalogs + Torrentio streams (auth-less JSON APIs), sequential torrent engine already proven on the A5. Pending issue: iOS 8 distrusts modern CAs → inject Debian CAs (documented in regulad's fork).
+3. Optional: dyld cache patch (daibutsu/haxx — compiled at `casa:/tmp/haxx`, patched cache at `casa:/tmp/dsc_patched`) for full AMFI-off if tweaks are ever needed.
+
+## Public repo
+- Everything published at: `github.com/fascettob-collab/atv3-untethered-linux` (local: `Apple-TV/github-repo/`). This file is the English translation of `docs/NOTAS-es.md` (the Spanish source of truth).
