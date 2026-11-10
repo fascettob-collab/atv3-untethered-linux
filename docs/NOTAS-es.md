@@ -114,7 +114,23 @@ Detalle que faltaba (bug final): `authorized_keys` iba en `/mnt1/private/var/roo
   3. Pedir el rtbuddyd del fork regulad/Blackb0x-- (mantenido 2026, quizá firma nueva).
   4. Inspeccionar desde el SSH tethered cómo validó AMFI (log de la firma).
 
-## Untether etasonATV instalado (2026-11-10 noche) — PENDIENTE DE DEBUG
+## Accesos SSH (post-untether, 2026-11-10 noche)
+- **PC Windows**: `ssh atv` (alias en `C:\Users\fasce\.ssh\config`, clave `atv`/`atv.pub` ed25519 instalada)
+- **casa (Linux)**: `ssh atv` (alias en `~/.ssh/config`)
+- **USB**: `iproxy 2222 22` en casa + `ssh -p 2222 root@localhost`
+- El SSH tarda **~3-5 min** tras encender la ATV (la cadena del untether).
+- IP: `192.168.0.109` (reservar en el router DHCP para que no cambie).
+- En la ATV faltan instalar: `cat`, `grep`, `head`, `ifconfig` (binarios armv7 en `emu/extra/`).
+
+## Próximos pasos / proyectos abiertos
+1. **Kodi Helix 14.2** en la ATV (repo del fork regulad/Blackb0x--, mantenido 2026) — playback con aceleración HW + carpeta compartida con casa.
+2. **"Stremio-ATV"**: adaptar PopcornTimeSE con catálogo de Cinemeta + streams de Torrentio (APIs JSON sin auth), motor torrent secuencial ya probado en la A5. Problema pendiente: iOS 8 no confía en CAs modernas → inyectar CAs de Debian (documentado en el fork de regulad). Prompt del proyecto guardado en el historial de la sesión.
+3. Opcional: parche del dyld cache (daibutsu/haxx — compilado en `casa:/tmp/haxx`, cache parcheado en `casa:/tmp/dsc_patched`) si se quiere AMFI totalmente off para tweaks.
+
+## Repo público
+- Todo el proyecto subido a: `github.com/fascettob-collab/atv3-untethered-linux` (repo local: `Apple-TV/github-repo/`). README + docs/journey.md (traducción EN de estas notas), boot/ramdisk/kernel/tools/scripts. `docs/NOTAS-es.md` = este archivo.
+
+
 Instalamos al disco (`/mnt1`, todo verificado byte-exacto con el streamer):
 - `/usr/libexec/rtbuddyd` = jsc (Apple-signed) → en cada boot, launchd lo spawnea (label `com.apple.rtbuddyd` confirmado en el jetsam plist del sistema)
 - `/--early-boot` y `/untether/expl.js` (exploit JavaScriptCore), `/untether/untether.bin` (la versión MODIFICADA por NSSpiral, no orig_untether.bin)
