@@ -8,11 +8,9 @@ on:
 
 jobs:
   syntax:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Install Python 2.7
-        run: sudo apt-get update && sudo apt-get install -y python2
       - name: Bash syntax (all .sh)
         run: |
           set -e
@@ -20,10 +18,20 @@ jobs:
             echo "bash -n $f"
             bash -n "$f"
           done
-      - name: Python compile (all .py)
+      - name: Python tokenize (all .py, py2/py3 compatible)
         run: |
           set -e
-          for f in $(find . -name '*.py'); do
-            echo "py_compile $f"
-            python2 -m py_compile "$f"
-          done
+          python3 - <<'PY'
+          import tokenize, pathlib, sys
+          bad = False
+          for p in sorted(pathlib.Path('.').rglob('*.py')):
+              try:
+                  with p.open() as fh:
+                      list(tokenize.generate_tokens(fh.readline))
+                  print('OK', p)
+              except Exception as e:
+                  print('FAIL', p, e)
+                  bad = True
+          if bad:
+              sys.exit(1)
+          PY
