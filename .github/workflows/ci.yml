@@ -1,0 +1,29 @@
+name: syntax-check
+
+on:
+  push:
+    branches: [ "ci-syntax-checks" ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  syntax:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Python 2.7
+        run: sudo apt-get update && sudo apt-get install -y python2
+      - name: Bash syntax (all .sh)
+        run: |
+          set -e
+          for f in $(find . -name '*.sh'); do
+            echo "bash -n $f"
+            bash -n "$f"
+          done
+      - name: Python compile (all .py)
+        run: |
+          set -e
+          for f in $(find . -name '*.py'); do
+            echo "py_compile $f"
+            python2 -m py_compile "$f"
+          done
